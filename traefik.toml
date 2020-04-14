@@ -1,0 +1,17 @@
+[providers.docker]
+  exposedByDefault = false
+[entryPoints.web]
+    address = ":80"
+[entryPoints.websecure]
+    address = ":443"
+[entryPoints.api]
+    address = ":8080"
+[api]
+   dashboard = true
+   debug = true
+[certificatesResolvers.do.acme]
+    email = "email@gmail.com"
+    storage = "acme.json"
+  [certificatesResolvers.do.acme.dnsChallenge]
+    provider = "digitalocean"
+    delayBeforeCheck = 10

@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:v2.2
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api.rule=Host(`traefik.<example.com>`)"
+        - "traefik.http.routers.api.entrypoints=websecure"
+        - "traefik.http.routers.api.tls.certresolver=do"
+        - "traefik.http.routers.api.service=api@internal"
+        - "traefik.http.routers.api.middlewares=auth"
+        - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$7P/yeHno$$AV6pmR7SRanY.zpn/vPfO."
+    ports:
+        - "80:80"
+        - "443:443"
+        - "8080:8080"
+    environment:
+        # - "DO_AUTH_TOKEN=xxx"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
+    networks:
+        - web
+networks:
+    web:
+        external: true
